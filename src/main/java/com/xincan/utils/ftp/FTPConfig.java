@@ -1,6 +1,5 @@
 package com.xincan.utils.ftp;
 
-
 public class FTPConfig {
 	// FTP路径
 	private String url;

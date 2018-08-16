@@ -155,7 +155,56 @@ public class FTPUtil {
 	        }
 	    }
 
-	    /**
+	/**
+	 *
+	 * downloadFile(下载文件  )
+	 *
+	 * @author JiangXincan
+	 * @Title: downloadFile
+	 * @param @param localFile      本地文件
+	 * @param @param remoteFileName 远程文件名称
+	 * @param @return    设定文件
+	 * @return boolean    返回类型
+	 */
+	public static boolean downloadFile(File localFile, String remoteFileName) {
+		BufferedOutputStream outStream = null;
+		FileOutputStream outStr = null;
+		boolean success = false;
+		try {
+			outStr = new FileOutputStream(localFile);
+			outStream = new BufferedOutputStream(outStr);
+			success = ftpClient.retrieveFile(remoteFileName, outStream);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != outStream) {
+					try {
+						outStream.flush();
+						outStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (null != outStr) {
+					try {
+						outStr.flush();
+						outStr.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return success;
+	}
+
+	/**
 	      *
 	      * downloadFile(下载文件 )
 	      *
@@ -246,7 +295,40 @@ public class FTPUtil {
 	        return success;
 	    }
 
-	    /**
+	/**
+	 *
+	 * uploadFile(上传文件)
+	 *
+	 * @author JiangXincan
+	 * @Title: uploadFile
+	 * @param @param localFile      本地文件
+	 * @param @param remoteFileName 服务器文件名称
+	 * @param @return    设定文件
+	 * @return boolean    返回类型
+	 */
+	public static boolean uploadFile(File localFile, String remoteFileName) {
+		BufferedInputStream inStream = null;
+		boolean success = false;
+		try {
+			inStream = new BufferedInputStream(new FileInputStream(localFile));
+			success = ftpClient.storeFile(remoteFileName, inStream);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inStream != null) {
+				try {
+					inStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return success;
+	}
+
+	/**
 	      *
 	      * changeDir(变更工作目录)
 	      *
@@ -435,7 +517,8 @@ public class FTPUtil {
 					"ftptest","123456",null
 			);
 	    	ftpLogin(config);
-	    	uploadFile("D:\\images\\channel\\01-短信.png", "curl-7.54.0.zip");
+			File file = new File("D:\\images\\channel\\01-短信.png");
+	    	uploadFile("D:\\images\\channel\\01-短信.png", "短信.png");
 //	    	File file = new File("G:/img/xincan.png");
 //	    	uploadFile(file, "xincan.png");
 //	    	JSONArray files = getListFiels();
