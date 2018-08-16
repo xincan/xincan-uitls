@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.net.ftp.FTP;
@@ -15,7 +14,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
-import org.apache.log4j.Logger;
+
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -27,7 +26,6 @@ import com.alibaba.fastjson.JSONArray;
   */
 public class FTPUtil {
 
-	    private static Logger log = Logger.getLogger(FTPUtil.class);
 	    private static FTPClient ftpClient = new FTPClient();
 
 	    /**
@@ -240,13 +238,17 @@ public class FTPUtil {
 	            			break;
 	            		}
 	            	}
+
 	            }else{
-	            	log.error("消息通知：ftp服务器不存在文件：【"+ remoteFileName + "】");
+
+					System.out.println("消息通知：ftp服务器不存在文件：【"+ remoteFileName + "】");
 	            }
 	            //success = ftpClient.retrieveFile(remoteFileName, outStream);
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
-	            log.error("消息通知：ftp服务器不存在文件：【"+ remoteFileName + "】");
+
+
+				System.out.println("消息通知：ftp服务器不存在文件：【"+ remoteFileName + "】");
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        } finally {
