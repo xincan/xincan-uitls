@@ -17,6 +17,10 @@
     <commons-net>3.6</commons-net>
     <commons-pool2>2.4.2</commons-pool2>
     <commons-lang3>3.7</commons-lang3>
+    <com.alibaba.fastjson>1.2.44</com.alibaba.fastjson>
+    <log4j>1.2.17</log4j>
+    <org.dom4j>2.1.1</org.dom4j>
+    <org.projectlombok>1.16.20</org.projectlombok>
   </properties>
 
   <dependencies>
@@ -24,7 +28,7 @@
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
-      <version>1.2.44</version>
+      <version>${com.alibaba.fastjson}</version>
     </dependency>
 
     <dependency>
@@ -47,13 +51,21 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <version>${log4j}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>${org.dom4j}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.20</version>
+      <version>${org.projectlombok}</version>
     </dependency>
+
 
   </dependencies>
 
@@ -70,12 +82,12 @@
     <repository>
       <id>nexus-release</id>
       <name>admin</name>
-      <url>http://192.168.2.112:8081/repository/nexus-releases/</url>
+      <url>http://192.168.2.122:8081/repository/nexus-releases/</url>
     </repository>
     <snapshotRepository>
       <id>nexus-snapshots</id>
       <name>admin</name>
-      <url>http://192.168.2.112:8081/repository/nexus-snapshots/</url>
+      <url>http://192.168.2.122:8081/repository/nexus-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
