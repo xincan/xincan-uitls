@@ -411,13 +411,10 @@ public class XMLUtil {
             File file = new File(pathName);
             // 创建XMLWriter对象
             XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
-
             //设置不自动进行转义
             writer.setEscapeText(false);
-
             // 生成XML文件
             writer.write(document);
-
             //关闭XMLWriter对象
             writer.close();
         } catch (IOException e) {
