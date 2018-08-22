@@ -516,7 +516,7 @@ public class FTPUtil {
 	    public static void main(String[] args){
 	    	FTPConfig config = new FTPConfig(
 	    			"192.168.1.123",21,"warn",
-					"ftptest","123456",null
+					"ftptest","123456",null,null
 			);
 	    	ftpLogin(config);
 			File file = new File("D:\\images\\channel\\01-短信.png");

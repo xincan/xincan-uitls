@@ -2,6 +2,7 @@ package com.xincan.utils.xml;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xincan.utils.file.FileUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -11,6 +12,8 @@ import org.dom4j.io.XMLWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * xml工具类
@@ -293,7 +296,7 @@ public class XMLUtil {
      * 生成国突对接CAP协议文件
      * @param json
      */
-    public static String setRecordXML(JSONObject json, String saveUrl){
+    public static File setRecordXML(JSONObject json, String saveUrl){
 
         // Document
         Document document = DocumentHelper.createDocument();
@@ -405,10 +408,8 @@ public class XMLUtil {
                 json.getString("disasterLevel"),
                 json.getString("warnType")
         );
-        String pathName = saveUrl + "/" + fileName;
+        File file = FileUtil.isDirectory(saveUrl,fileName);
         try {
-
-            File file = new File(pathName);
             // 创建XMLWriter对象
             XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
             //设置不自动进行转义
@@ -420,7 +421,7 @@ public class XMLUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return pathName;
+        return file;
     }
 
 
@@ -431,8 +432,14 @@ public class XMLUtil {
 
         JSONObject param = JSONObject.parseObject(str);
 
-        setRecordXML(param, "d:/");
+        File fileXML = setRecordXML(param, "d:/aaa/");
+        File file = new File(fileXML.getPath());
+        List<File> list = new ArrayList<>();
+        list.add(file);
 
+        File a = FileUtil.getZipFile(list,"d:/aaa/", fileXML.getName().substring(0,fileXML.getName().lastIndexOf("."))+".zip");
+
+        System.out.println(a.getPath());
     }
 
 
