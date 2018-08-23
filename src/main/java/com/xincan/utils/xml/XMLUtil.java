@@ -21,7 +21,7 @@ import java.util.List;
 public class XMLUtil {
 
     // 预警消息内容
-    private static String content;
+    private static String defaultContent = "";
 
     /**
      *
@@ -166,8 +166,8 @@ public class XMLUtil {
         // 获取发布手段
         JSONArray channelArray = json.getJSONArray("channel");
 
-        // 获取影响地区
-        JSONArray areaArray = json.getJSONArray("area");
+        // 获取内容
+        JSONObject content = json.getJSONObject("content");
 
         // 获取群组
         JSONObject group = json.getJSONObject("group");
@@ -175,22 +175,24 @@ public class XMLUtil {
         for(int i = 0; i<channelArray.size(); i++){
             JSONObject channel = channelArray.getJSONObject(i);
 
+            JSONObject area = JSONArray.parseArray(content.getString(channel.getString("channelId"))).getJSONObject(0);
+
             // （必选）消息主体
             Element method = code.addElement("method");
-            // （必选）发布手段编码： 如短信的是：SMS
-            method.addElement("methodName").setText(channel.getString("channelCode"));
 
-            // 获取地区ID
-            String areaId = areaArray.getJSONObject(0).getString("areaId");
+            // （必选）发布手段编码： 如短信的是：SMS
+            method.addElement("methodName").setText(area.getString("channelCode"));
 
             // 获取预警内容
-            content = json.getString("content_" + channel.getString("channelId") + "_" + areaId);
+            if(defaultContent == ""){
+                defaultContent = area.getString("content");
+            }
 
             // （必选）使用该手段发布的发布内容（若为空，则发布手段到<description>字段取完整的预警信息内容）
-            method.addElement("message").setText(content);
+            method.addElement("message").setText(area.getString("content"));
 
             // 获取当前发布手段下的渠道
-            JSONArray groupArray = group.getJSONArray(channel.getString("channelId"));
+            JSONArray groupArray = group.getJSONArray(area.getString("channelId"));
 
             if(groupArray == null){
                 // 使用该手段发布的对象/对象群组ID
@@ -385,7 +387,7 @@ public class XMLUtil {
         );
 
         //（必选）预警信息正文
-        info.addElement("description").setText(content);
+        info.addElement("description").setText(defaultContent);
 
         //（可选）对建议采取措施的描述
         info.addElement("instruction").setText(json.getString("instruction"));
@@ -428,7 +430,7 @@ public class XMLUtil {
 
     public static void main(String[] args) {
 
-        String str = "{\"msg\":\"发布成功\",\"msgType\":\"Alert\",\"warnType\":\"Test\",\"channel\":[{\"channelName\":\"短信\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"channelCode\":\"SMS\"},{\"channelName\":\"大喇叭\",\"channelId\":\"a142bd608b1511e8b73168f7285847c8\",\"channelCode\":\"SPEAKER\"},{\"channelName\":\"广播\",\"channelId\":\"f7ce05fb8b1511e8b73168f7285847c8\",\"channelCode\":\"BROADCAST\"}],\"editTime\":\"2018-08-21 17:51:27\",\"invalidTime\":\"2018-08-21 17:51:27\",\"disasterName\":\"暴雨\",\"organizationId\":\"312ddd73987811e8a5ed8cec4b81c244\",\"forecastTime\":\"2018-08-21 17:51:27\",\"record\":1,\"scope\":\"Public\",\"id\":\"ea14754ba52511e8bee28cec4b81c244\",\"group\":{\"a142bd608b1511e8b73168f7285847c8\":[{\"id\":\"51eedc9d8fe411e885e268f7285847c8\",\"channelId\":\"a142bd608b1511e8b73168f7285847c8\",\"userGroupId\":\"f95e8bef8f2e11e885e268f7285847c8\",\"userGroupName\":\"水利局大喇叭群组\",\"userName\":\"大喇叭1\",\"userCode\":\"343464534asdfa\",\"longitude\":0.0,\"latitude\":0.0,\"altitude\":0.0,\"channelName\":\"大喇叭\"}],\"8d2448858b1511e8b73168f7285847c8\":[{\"id\":\"167210008f0511e885e268f7285847c8\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"userGroupName\":\"水利局短信群组\",\"userName\":\"xincan\",\"userCode\":\"18501377889\",\"longitude\":23.34,\"latitude\":234.23,\"altitude\":23.23,\"channelName\":\"短信\"},{\"id\":\"73d79240a50d11e8bee28cec4b81c244\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userGroupId\":\"5d7502ffa50d11e8bee28cec4b81c244\",\"userGroupName\":\"华池县短信测试群组\",\"userName\":\"xincan\",\"userCode\":\"18501377889\",\"longitude\":123.43,\"latitude\":43.34,\"altitude\":12.43,\"channelName\":\"短信\"}]},\"area\":[{\"areaCode\":\"62102300000000\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"areaName\":\"华池县\"}],\"disasterColor\":0,\"content_a142bd608b1511e8b73168f7285847c8_52db5b81970911e8a5ed8cec4b81c244\":\"测试：发布暴雨红色预警（红色）\",\"organizationName\":\"华池县发布中心\",\"disasterId\":\"71cb388d8e6911e885e268f7285847c8\",\"employeeId\":\"ea14754ba52511e8bee28cec4b81c244\",\"content_8d2448858b1511e8b73168f7285847c8_52db5b81970911e8a5ed8cec4b81c244\":\"测试：发布暴雨红色预警（红色）\",\"sendTime\":\"2018-08-21 17:51:27\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"measure\":\"1：请使用滴滴搭船\",\"content_f7ce05fb8b1511e8b73168f7285847c8_52db5b81970911e8a5ed8cec4b81c244\":\"测试：发布暴雨红色预警（红色）\",\"organizationCode\":\"62102300000000\",\"instruction\":\"1：请使用滴滴搭船\",\"disasterCode\":\"11B03\",\"files\":[{\"size\":\"436639\",\"name\":\"5791d82fef635.jpg\",\"id\":\"ea1c11d7a52511e8bee28cec4b81c244\",\"warnEditId\":\"ea14754ba52511e8bee28cec4b81c244\",\"url\":\"/warnFile/5791d82fef635.jpg\"},{\"size\":\"321778\",\"name\":\"5791d8281f685.jpg\",\"id\":\"ea1c12d1a52511e8bee28cec4b81c244\",\"warnEditId\":\"ea14754ba52511e8bee28cec4b81c244\",\"url\":\"/warnFile/5791d8281f685.jpg\"},{\"size\":\"138248\",\"name\":\"psb.jpg\",\"id\":\"ea1c1312a52511e8bee28cec4b81c244\",\"warnEditId\":\"ea14754ba52511e8bee28cec4b81c244\",\"url\":\"/warnFile/psb.jpg\"}],\"disasterLevel\":0,\"user\":{\"f95e8bef8f2e11e885e268f7285847c8\":[{\"userGroupId\":\"f95e8bef8f2e11e885e268f7285847c8\",\"altitude\":0.0,\"latitude\":0.0,\"userGroupName\":\"水利局大喇叭群组\",\"channelName\":\"大喇叭\",\"id\":\"51eedc9d8fe411e885e268f7285847c8\",\"userName\":\"大喇叭1\",\"channelId\":\"a142bd608b1511e8b73168f7285847c8\",\"userCode\":\"343464534asdfa\",\"longitude\":0.0}],\"5d7502ffa50d11e8bee28cec4b81c244\":[{\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"altitude\":23.23,\"latitude\":234.23,\"userGroupName\":\"水利局短信群组\",\"channelName\":\"短信\",\"id\":\"167210008f0511e885e268f7285847c8\",\"userName\":\"xincan\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":23.34},{\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"altitude\":234.23,\"latitude\":23.234,\"userGroupName\":\"水利局短信群组\",\"channelName\":\"短信\",\"id\":\"57489da6a46911e8bee28cec4b81c244\",\"userName\":\"姜新灿\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":234.234},{\"userGroupId\":\"5d7502ffa50d11e8bee28cec4b81c244\",\"altitude\":12.43,\"latitude\":43.34,\"userGroupName\":\"华池县短信测试群组\",\"channelName\":\"短信\",\"id\":\"73d79240a50d11e8bee28cec4b81c244\",\"userName\":\"xincan\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":123.43}],\"442661118fe411e885e268f7285847c8\":[{\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"altitude\":23.23,\"latitude\":234.23,\"userGroupName\":\"水利局短信群组\",\"channelName\":\"短信\",\"id\":\"167210008f0511e885e268f7285847c8\",\"userName\":\"xincan\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":23.34},{\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"altitude\":234.23,\"latitude\":23.234,\"userGroupName\":\"水利局短信群组\",\"channelName\":\"短信\",\"id\":\"57489da6a46911e8bee28cec4b81c244\",\"userName\":\"姜新灿\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":234.234},{\"userGroupId\":\"5d7502ffa50d11e8bee28cec4b81c244\",\"altitude\":12.43,\"latitude\":43.34,\"userGroupName\":\"华池县短信测试群组\",\"channelName\":\"短信\",\"id\":\"73d79240a50d11e8bee28cec4b81c244\",\"userName\":\"xincan\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"userCode\":\"18501377889\",\"longitude\":123.43}]},\"status\":4}";
+        String str = "{\"msg\":\"发布成功\",\"msgType\":\"Alert\",\"warnType\":\"Test\",\"channel\":[{\"channelName\":\"短信\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"channelCode\":\"SMS\"},{\"channelName\":\"大喇叭\",\"channelId\":\"a142bd608b1511e8b73168f7285847c8\",\"channelCode\":\"SPEAKER\"},{\"channelName\":\"广播\",\"channelId\":\"f7ce05fb8b1511e8b73168f7285847c8\",\"channelCode\":\"BROADCAST\"}],\"editTime\":\"2018-08-23 16:25:24\",\"invalidTime\":\"2018-08-23 16:25:24\",\"content\":{\"f7ce05fb8b1511e8b73168f7285847c8\":[{\"areaCode\":\"62102300000000\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"areaName\":\"华池县\",\"channelCode\":\"BROADCAST\",\"channelId\":\"f7ce05fb8b1511e8b73168f7285847c8\",\"channelName\":\"广播\",\"content\":\"测试：发布暴雨红色预警（红色）\",\"id\":\"76b782dba53411e8bee28cec4b81c244\",\"warnEditId\":\"76b3a09fa53411e8bee28cec4b81c244\"}],\"a142bd608b1511e8b73168f7285847c8\":[{\"areaCode\":\"62102300000000\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"areaName\":\"华池县\",\"channelCode\":\"SPEAKER\",\"channelId\":\"a142bd608b1511e8b73168f7285847c8\",\"channelName\":\"大喇叭\",\"content\":\"测试：发布暴雨红色预警（红色）\",\"id\":\"76b7826fa53411e8bee28cec4b81c244\",\"warnEditId\":\"76b3a09fa53411e8bee28cec4b81c244\"}],\"8d2448858b1511e8b73168f7285847c8\":[{\"areaCode\":\"62102300000000\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"areaName\":\"华池县\",\"channelCode\":\"SMS\",\"channelId\":\"8d2448858b1511e8b73168f7285847c8\",\"channelName\":\"短信\",\"content\":\"测试：发布暴雨红色预警（红色）\",\"id\":\"76b7807aa53411e8bee28cec4b81c244\",\"warnEditId\":\"76b3a09fa53411e8bee28cec4b81c244\"}]},\"disasterName\":\"暴雨\",\"organizationId\":\"312ddd73987811e8a5ed8cec4b81c244\",\"forecastTime\":\"2018-08-23 16:25:24\",\"record\":1,\"scope\":\"Public\",\"id\":\"76b3a09fa53411e8bee28cec4b81c244\",\"group\":{\"a142bd608b1511e8b73168f7285847c8\":[{\"userGroupId\":\"f95e8bef8f2e11e885e268f7285847c8\",\"userGroupName\":\"水利局大喇叭群组\"}],\"8d2448858b1511e8b73168f7285847c8\":[{\"userGroupId\":\"442661118fe411e885e268f7285847c8\",\"userGroupName\":\"水利局短信群组\"},{\"userGroupId\":\"5d7502ffa50d11e8bee28cec4b81c244\",\"userGroupName\":\"华池县短信测试群组\"}]},\"area\":[{\"areaCode\":\"62102300000000\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"areaName\":\"华池县\"}],\"disasterColor\":0,\"organizationName\":\"华池县发布中心\",\"disasterId\":\"71cb388d8e6911e885e268f7285847c8\",\"employeeId\":\"76b3a09fa53411e8bee28cec4b81c244\",\"sendTime\":\"2018-08-23 16:25:24\",\"areaId\":\"52db5b81970911e8a5ed8cec4b81c244\",\"measure\":\"1：请使用滴滴搭船\",\"organizationCode\":\"62102300000000\",\"instruction\":\"1：请使用滴滴搭船\",\"disasterCode\":\"11B03\",\"files\":[],\"disasterLevel\":0,\"user\":{\"f95e8bef8f2e11e885e268f7285847c8\":[{\"altitude\":0.0,\"latitude\":0.0,\"userName\":\"大喇叭1\",\"userCode\":\"343464534asdfa\",\"longitude\":0.0}],\"5d7502ffa50d11e8bee28cec4b81c244\":[{\"altitude\":12.43,\"latitude\":43.34,\"userName\":\"xincan\",\"userCode\":\"18501377889\",\"longitude\":123.43}],\"442661118fe411e885e268f7285847c8\":[{\"altitude\":23.23,\"latitude\":234.23,\"userName\":\"xincan\",\"userCode\":\"18501377889\",\"longitude\":23.34},{\"altitude\":234.23,\"latitude\":23.234,\"userName\":\"姜新灿\",\"userCode\":\"18501377889\",\"longitude\":234.234}]},\"status\":4}";
 
         JSONObject param = JSONObject.parseObject(str);
 
