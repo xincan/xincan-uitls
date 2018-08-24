@@ -87,4 +87,35 @@ public class DisasterUtil {
         return json;
     }
 
+    /**
+     * 获取颜色
+     * @param disasterColor
+     * 灾种级别：0：Ⅰ级/特别重大；1：Ⅱ级/重大；2：Ⅲ级/较大；3：Ⅳ级/一般
+     * @return
+     */
+    public static JSONObject getDisasterInfo(int disasterColor){
+        JSONObject json = new JSONObject();
+        if(disasterColor == 0){
+            json.put("rgb", "#FF0000");
+            json.put("color", "红色");
+            json.put("level", "[Ⅰ级/特别重大]");
+        }
+        if(disasterColor == 1){
+            json.put("rgb", "#FFA500");
+            json.put("color", "橙色");
+            json.put("level", "[Ⅱ级/重大]");
+        }
+        if(disasterColor == 2){
+            json.put("rgb", "#FFFF00");
+            json.put("color", "黄色");
+            json.put("level", "[Ⅲ级/较大]");
+        }
+        if(disasterColor == 3){
+            json.put("rgb", "#0000FF");
+            json.put("color", "蓝色");
+            json.put("level", "[Ⅳ级/一般]");
+        }
+        return json;
+    }
+
 }
