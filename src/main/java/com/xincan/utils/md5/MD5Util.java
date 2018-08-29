@@ -8,11 +8,11 @@ import java.security.MessageDigest;
 public class MD5Util {
 
     /**
-     * md5加密
+     * md5加密（大写）
      * @param mac
      * @return
      */
-    public static String md5toUpperCase32(String mac){
+    public static String md5(String mac){
         MessageDigest md5;
         try {
             md5 = MessageDigest.getInstance("MD5");
@@ -28,6 +28,24 @@ public class MD5Util {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return mac.toUpperCase();
+        return mac;
+    }
+
+    /**
+     * md5加密（大写）
+     * @param mac
+     * @return
+     */
+    public static String md5toUpperCase32(String mac){
+        return md5(mac).toUpperCase();
+    }
+
+    /**
+     * md5加密（小写）
+     * @param mac
+     * @return
+     */
+    public static String md5toLowerCase32(String mac){
+        return md5(mac).toLowerCase();
     }
 }
