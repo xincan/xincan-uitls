@@ -13,11 +13,13 @@ public class DisasterUtil {
      * @return
      */
     public static String parseColorString(int color){
+
         if(color == 0) return "红色";
         if(color == 1) return "橙色";
         if(color == 2) return "黄色";
         if(color == 3) return "蓝色";
         return null;
+
     }
 
     /**
