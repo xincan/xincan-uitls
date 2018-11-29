@@ -63,13 +63,13 @@ public class FTPUtil {
 			if (ftpClient.isConnected())  return false;
 			// 判断FTP是否有端口
 			if (config.getPort() > 0) {
-				ftpClient.connect(config.getUrl(), config.getPort());
+				ftpClient.connect(config.getHost(), config.getPort());
 			} else {
-				ftpClient.connect(config.getUrl());
+				ftpClient.connect(config.getHost());
 			}
 			if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
 				// 登录FTP
-				if (ftpClient.login(config.getUserName(), config.getPassword())) {
+				if (ftpClient.login(config.getUser(), config.getPassword())) {
 					// 开启服务器对UTF-8的支持，如果服务器支持就用UTF-8编码，否则就使用本地编码（GBK）.
 					if (FTPReply.isPositiveCompletion(ftpClient.sendCommand("OPTS UTF8", "ON"))) {
 						LOCAL_CHARSET = "UTF-8";
@@ -82,7 +82,7 @@ public class FTPUtil {
 //					ftpClient.setDataTimeout(2000);						// 设置超时
 				}
 			}
-			log.info("成功登陆FTP服务器：" + config.getUrl() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
+			log.info("成功登陆FTP服务器：" + config.getHost() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
 			return true;
 		} catch (SocketException e) {
 			e.printStackTrace();

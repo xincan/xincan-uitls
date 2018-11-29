@@ -6,7 +6,7 @@ package com.xincan.utils.ftp;
 public class FTPConfig {
 
 	// FTP路径
-	private String url;
+	private String host;
 
 	// FTP端口号
 	private int port;
@@ -15,44 +15,43 @@ public class FTPConfig {
 	private String path;
 
 	// FTP用户名
-	private String userName;
+	private String user;
 
 	// FTP用户密码
 	private String password;
 
 	// 下载文件时保存到本地的路径
-	private String downloadLocalFile;
+	private String localPath;
 
 	// 本地生成文件路径
-	private String uploadFtpFile;
+	private String uploadPath;
 
 	public FTPConfig() {}
 
-	public FTPConfig(String url, int port, String path, String userName, String password) {
-		this.url = url;
+	public FTPConfig(String host, int port, String path, String user, String password) {
+		this.host = host;
 		this.port = port;
 		this.path = path;
-		this.userName = userName;
+		this.user = user;
 		this.password = password;
 	}
 
-
-	public FTPConfig(String url, int port, String path, String userName, String password, String downloadLocalFile, String uploadFtpFile) {
-		this.url = url;
+	public FTPConfig(String host, int port, String path, String user, String password, String localPath, String uploadPath) {
+		this.host = host;
 		this.port = port;
 		this.path = path;
-		this.userName = userName;
+		this.user = user;
 		this.password = password;
-		this.downloadLocalFile = downloadLocalFile;
-		this.uploadFtpFile = uploadFtpFile;
+		this.localPath = localPath;
+		this.uploadPath = uploadPath;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getHost() {
+		return host;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	public int getPort() {
@@ -71,12 +70,12 @@ public class FTPConfig {
 		this.path = path;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUser() {
+		return user;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public String getPassword() {
@@ -87,19 +86,19 @@ public class FTPConfig {
 		this.password = password;
 	}
 
-	public String getDownloadLocalFile() {
-		return downloadLocalFile;
+	public String getLocalPath() {
+		return localPath;
 	}
 
-	public void setDownloadLocalFile(String downloadLocalFile) {
-		this.downloadLocalFile = downloadLocalFile;
+	public void setLocalPath(String localPath) {
+		this.localPath = localPath;
 	}
 
-	public String getUploadFtpFile() {
-		return uploadFtpFile;
+	public String getUploadPath() {
+		return uploadPath;
 	}
 
-	public void setUploadFtpFile(String uploadFtpFile) {
-		this.uploadFtpFile = uploadFtpFile;
+	public void setUploadPath(String uploadPath) {
+		this.uploadPath = uploadPath;
 	}
 }
