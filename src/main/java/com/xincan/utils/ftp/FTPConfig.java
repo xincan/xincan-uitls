@@ -21,10 +21,10 @@ public class FTPConfig {
 	private String password;
 
 	// 下载文件时保存到本地的路径
-	private String downloadFile;
+	private String downloadLocalFile;
 
 	// 本地生成文件路径
-	private String uploadFile;
+	private String uploadFtpFile;
 
 	public FTPConfig() {}
 
@@ -36,14 +36,15 @@ public class FTPConfig {
 		this.password = password;
 	}
 
-	public FTPConfig(String url, int port, String path, String userName, String password, String downloadFile, String uploadFile) {
+
+	public FTPConfig(String url, int port, String path, String userName, String password, String downloadLocalFile, String uploadFtpFile) {
 		this.url = url;
 		this.port = port;
 		this.path = path;
 		this.userName = userName;
 		this.password = password;
-		this.downloadFile = downloadFile;
-		this.uploadFile = uploadFile;
+		this.downloadLocalFile = downloadLocalFile;
+		this.uploadFtpFile = uploadFtpFile;
 	}
 
 	public String getUrl() {
@@ -86,19 +87,19 @@ public class FTPConfig {
 		this.password = password;
 	}
 
-	public String getDownloadFile() {
-		return downloadFile;
+	public String getDownloadLocalFile() {
+		return downloadLocalFile;
 	}
 
-	public void setDownloadFile(String downloadFile) {
-		this.downloadFile = downloadFile;
+	public void setDownloadLocalFile(String downloadLocalFile) {
+		this.downloadLocalFile = downloadLocalFile;
 	}
 
-	public String getUploadFile() {
-		return uploadFile;
+	public String getUploadFtpFile() {
+		return uploadFtpFile;
 	}
 
-	public void setUploadFile(String uploadFile) {
-		this.uploadFile = uploadFile;
+	public void setUploadFtpFile(String uploadFtpFile) {
+		this.uploadFtpFile = uploadFtpFile;
 	}
 }

@@ -18,54 +18,62 @@
     <commons-pool2>2.4.2</commons-pool2>
     <commons-lang3>3.7</commons-lang3>
     <com.alibaba.fastjson>1.2.44</com.alibaba.fastjson>
-    <log4j>1.2.17</log4j>
     <org.dom4j>2.1.1</org.dom4j>
-    <org.projectlombok>1.16.20</org.projectlombok>
+    <lombok.version>1.16.20</lombok.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <junrar.version>3.0.0</junrar.version>
   </properties>
 
   <dependencies>
 
+    <!--添加阿里巴巴json依赖-->
     <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-      <version>${com.alibaba.fastjson}</version>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${com.alibaba.fastjson}</version>
     </dependency>
 
     <dependency>
-      <groupId>commons-net</groupId>
-      <artifactId>commons-net</artifactId>
-      <version>${commons-net}</version>
+        <groupId>commons-net</groupId>
+        <artifactId>commons-net</artifactId>
+        <version>${commons-net}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-pool2</artifactId>
-      <version>${commons-pool2}</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>${commons-pool2}</version>
     </dependency>
-
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>${commons-lang3}</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3}</version>
     </dependency>
 
+    <!--添加dom4j依赖-->
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j}</version>
+        <groupId>org.dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>${org.dom4j}</version>
     </dependency>
 
+    <!--添加日志依赖-->
     <dependency>
-      <groupId>org.dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <version>${org.dom4j}</version>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
     </dependency>
-
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${org.projectlombok}</version>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
     </dependency>
 
+    <!--添加rar解压包依赖-->
+    <dependency>
+        <groupId>com.github.junrar</groupId>
+        <artifactId>junrar</artifactId>
+        <version>${junrar.version}</version>
+    </dependency>
 
   </dependencies>
 
