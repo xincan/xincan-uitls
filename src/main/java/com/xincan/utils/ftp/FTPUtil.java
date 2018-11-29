@@ -10,7 +10,6 @@ import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
@@ -32,12 +31,22 @@ public class FTPUtil {
 	/**
 	 * 本地字符编码
 	 */
-	private static String LOCAL_CHARSET = "GBK";
+	private static String DEFAULT_CHARSET = "GBK";
+
+	/**
+	 * 本地字符编码
+	 */
+	private static String LOCAL_CHARSET = "UTF-8";
 
 	/**
 	 * FTP协议里面，规定文件名编码为ISO-8859-1
 	 */
 	private static String SERVER_CHARSET = "ISO-8859-1";
+
+	/**
+	 * 判断属于那个字符编码 UTF-8:true, GBK：false
+	 */
+	private static boolean IS_CHARSET = false;
 
 	/**
 	 * FTP客户端
@@ -72,9 +81,9 @@ public class FTPUtil {
 				if (ftpClient.login(config.getUser(), config.getPassword())) {
 					// 开启服务器对UTF-8的支持，如果服务器支持就用UTF-8编码，否则就使用本地编码（GBK）.
 					if (FTPReply.isPositiveCompletion(ftpClient.sendCommand("OPTS UTF8", "ON"))) {
-						LOCAL_CHARSET = "UTF-8";
+						IS_CHARSET = true;
 					}
-					ftpClient.setControlEncoding(LOCAL_CHARSET);
+					ftpClient.setControlEncoding( IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET);
 					ftpClient.changeWorkingDirectory(config.getPath());	// 设置FTP下的文件夹
 					ftpClient.enterLocalPassiveMode();					// 设置被动模式
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);		// 设置传输的模式
@@ -144,25 +153,8 @@ public class FTPUtil {
 				file.mkdirs();
 			}
 			outStream = new BufferedOutputStream(new FileOutputStream(localFilePath));
-			//add by jiangxincan 处理ftp上文件不存在
-			String[] strs = remoteFileName.split("\\\\");
-			String fileName = strs[strs.length-1];
-			String filePath = "";
-			for(int i=0;i<strs.length-1;i++){
-				filePath +=  strs[i]+"/";
-			}
-			String[] ftpFiles = ftpClient.listNames(filePath);
-			if(ftpFiles!=null&&ftpFiles.length>0){
-				for(String ftpFile:ftpFiles){
-					if(ftpFile.contains(fileName)){
-						remoteFileName = new String(remoteFileName.getBytes("UTF-8"), SERVER_CHARSET);
-						success = ftpClient.retrieveFile(remoteFileName, outStream);
-						break;
-					}
-				}
-			}else{
-				log.error("FTP服务器不存在文件：【"+ remoteFileName + "】");
-			}
+			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
+			success = ftpClient.retrieveFile(remoteFileName, outStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			log.error("FTP服务器不存在文件：【"+ remoteFileName + "】");
@@ -201,7 +193,7 @@ public class FTPUtil {
 		try {
 			outStr = new FileOutputStream(localFile);
 			outStream = new BufferedOutputStream(outStr);
-			remoteFileName = new String(remoteFileName.getBytes("UTF-8"), SERVER_CHARSET);
+			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			success = ftpClient.retrieveFile(remoteFileName, outStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -252,7 +244,7 @@ public class FTPUtil {
 		try {
 			File file = new File(localFilePath);
 			inStream = new BufferedInputStream(new FileInputStream(file));
-			remoteFileName = new String(remoteFileName.getBytes("UTF-8"), SERVER_CHARSET);
+			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			return ftpClient.storeFile(remoteFileName, inStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -288,7 +280,7 @@ public class FTPUtil {
 		BufferedInputStream inStream = null;
 		try {
 			inStream = new BufferedInputStream(new FileInputStream(localFile));
-			remoteFileName = new String(remoteFileName.getBytes("UTF-8"), SERVER_CHARSET);
+			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			return ftpClient.storeFile(remoteFileName, inStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -575,8 +567,16 @@ public class FTPUtil {
 		boolean bool = ftpLogin(config);
 		System.out.println(bool);
 
+		// 文件上传（根据路径上传）
+//		uploadFile("D:/ocpp/messageFtpDownload/测试.txt", "测试.txt");
+
+		// 文件上传（根据文件对象上传）
+//		File file = new File("D:/ocpp/messageFtpDownload/测试安山.txt");
+//		uploadFile(file, "测试安.txt");
+
+
 		// 下载文件（根据路径下载）
-//		downloadFile("D:/ocpp/messageFtpDownload/春运专报201503.doc", "春运专报201503.doc");
+//		downloadFile("D:/ocpp/messageFtpDownload/重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc", "重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc");
 
 		// 下载文件（根据文件下载）
 //		File file = new File("D:/ocpp/messageFtpDownload/春运专报201503.doc");
@@ -589,17 +589,10 @@ public class FTPUtil {
 //		List<String> list = getFileList();
 //		list.forEach(name -> System.out.println(name));
 
-		JSONObject result = getNewFile();
-		System.out.println(result);
+		// 获取最新文件
+//		JSONObject result = getNewFile();
+//		System.out.println(result);
 
-//		File file = new File("G:/img/xincan.png");
-//		uploadFile(file, "xincan.png");
-//		JSONArray files = getListFiels();
-//		if(files!=null){
-//			for(int i = 0; i<files.size(); i++){
-//				downloadFile("C:/wechat/"+files.get(i).toString(), files.get(i).toString());
-//			}
-//		}
 //
 //		changeDir(new String[]{"/pic"});
 //		deleteFile("xincan.png");
