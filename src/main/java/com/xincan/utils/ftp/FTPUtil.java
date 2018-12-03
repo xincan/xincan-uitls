@@ -53,30 +53,65 @@ public class FTPUtil {
 	 */
 	private static FTPClient ftpClient = null;
 
-	/**
+    /**
+     *
+     * isOpenFTPConnection(检查FTP服务器是否关闭 ，如果关闭接则连接登录FTP  )
+     *
+     * @author JiangXincan
+     * @Title: isOpenFTPConnection
+     * @param @return    设定文件
+     * @return boolean    返回类型
+     */
+    public static boolean isOpenFTPConnection(FTPConfig config) {
+        boolean isOpen = false;
+        if (null == ftpClient) {
+            return false;
+        }
+        try {
+            // 没有连接
+            if (!ftpClient.isConnected()) {
+                isOpen = login(config);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("FTP服务器连接登录异常！");
+            System.out.println(e.getMessage());
+            isOpen = false;
+        }
+        return isOpen;
+    }
+
+    /**
 	 *
 	 * 连接并登录FTP服务器
 	 *
 	 * @author JiangXincan
-	 * @Title: ftpLogin
+	 * @Title: login
 	 * @param @return    设定文件
 	 * @return boolean    返回类型
 	 */
-	public static boolean ftpLogin(FTPConfig config) {
+	public static boolean login(FTPConfig config) {
 
 
 		try {
 			// 如果没有创建FTP客户端则创建客户端
 			if (ftpClient == null)  ftpClient = new FTPClient();
-			// 判断FTP是否连接,如果连接则直接返回
-			if (ftpClient.isConnected())  return true;
+
 			// 判断FTP是否有端口
 			if (config.getPort() > 0) {
 				ftpClient.connect(config.getHost(), config.getPort());
 			} else {
 				ftpClient.connect(config.getHost());
 			}
-			if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
+
+            // FTP服务器连接回答
+            int reply = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply)) {
+                ftpClient.disconnect();
+                return false;
+            }
+
+            if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
 				// 登录FTP
 				if (ftpClient.login(config.getUser(), config.getPassword())) {
 					// 开启服务器对UTF-8的支持，如果服务器支持就用UTF-8编码，否则就使用本地编码（GBK）.
@@ -569,34 +604,38 @@ public class FTPUtil {
 				"192.168.1.133",21,"/word",
 				"xincan","xincan-0818","D:/ocpp/messageFtpDownload",null
 		);
-		boolean bool = ftpLogin(config);
-		System.out.println(bool);
 
-		// 文件上传（根据路径上传）
+		boolean connection = isOpenFTPConnection(config);
+        System.out.println(connection);
+		if(!connection){
+            boolean bool = login(config);
+            System.out.println(bool);
+
+            // 文件上传（根据路径上传）
 //		uploadFile("D:/ocpp/messageFtpDownload/测试.txt", "测试.txt");
 
-		// 文件上传（根据文件对象上传）
+            // 文件上传（根据文件对象上传）
 //		File file = new File("D:/ocpp/messageFtpDownload/测试安山.txt");
 //		uploadFile(file, "测试安.txt");
 
 
-		// 下载文件（下载到指定路径）
-		downloadFile("D:/ocpp/messageFtpDownload/地质灾害风险预报[2015年第1期].doc", "地质灾害风险预报[2015年第1期].doc");
+            // 下载文件（下载到指定路径）
+//		downloadFile("D:/ocpp/messageFtpDownload/地质灾害风险预报[2015年第1期].doc", "地质灾害风险预报[2015年第1期].doc");
 
-		// 下载文件（下载到指定文件）
+            // 下载文件（下载到指定文件）
 //		File file = new File("D:/ocpp/messageFtpDownload/春运专报201503.doc");
 //		downloadFile(file, "春运专报201503.doc");
 
-		// 远程创建文件夹
+            // 远程创建文件夹
 //		createFTPDirecroty("/行数/为/啊啊啊/asdf.jpg");
 
-		// 获取FTP目录下所有文件
+            // 获取FTP目录下所有文件
 //		List<String> list = getFileList();
 //		list.forEach(name -> System.out.println(name));
 
-		// 获取最新文件
-//		JSONObject result = getNewFile();
-//		System.out.println(result);
+            // 获取最新文件
+            JSONObject result = getNewFile();
+            System.out.println(result);
 
 //
 //		changeDir(new String[]{"/pic"});
@@ -604,7 +643,10 @@ public class FTPUtil {
 //		deleteDir("apache-tomcat-8.0.26");
 //		changeDir();
 
-		close();
+            close();
+        }
+
+
 	}
 
 }
