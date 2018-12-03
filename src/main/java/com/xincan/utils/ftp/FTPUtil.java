@@ -68,8 +68,8 @@ public class FTPUtil {
 		try {
 			// 如果没有创建FTP客户端则创建客户端
 			if (ftpClient == null)  ftpClient = new FTPClient();
-			// 判断FTP是否连接
-			if (ftpClient.isConnected())  return false;
+			// 判断FTP是否连接,如果连接则直接返回
+			if (ftpClient.isConnected())  return true;
 			// 判断FTP是否有端口
 			if (config.getPort() > 0) {
 				ftpClient.connect(config.getHost(), config.getPort());
@@ -577,7 +577,7 @@ public class FTPUtil {
 
 
 		// 下载文件（下载到指定路径）
-		downloadFile("D:/ocpp/messageFtpDownload/重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc", "重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc");
+		downloadFile("D:/ocpp/messageFtpDownload/地质灾害风险预报[2015年第1期].doc", "地质灾害风险预报[2015年第1期].doc");
 
 		// 下载文件（下载到指定文件）
 //		File file = new File("D:/ocpp/messageFtpDownload/春运专报201503.doc");
