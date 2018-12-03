@@ -2,27 +2,28 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+      <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.xincan</groupId>
-  <artifactId>xincan-utils</artifactId>
-  <version>1.0.0</version>
+      <groupId>com.xincan</groupId>
+      <artifactId>xincan-utils</artifactId>
+      <version>1.0.0</version>
 
-  <name>${project.artifactId}</name>
-  <url>https://github.com/xincan/xincan-utils</url>
-  <description>xincan-utils documentation</description>
+      <name>${project.artifactId}</name>
+      <url>https://github.com/xincan/xincan-utils</url>
+      <description>xincan-utils documentation</description>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <commons-net>3.6</commons-net>
-    <commons-pool2>2.4.2</commons-pool2>
-    <commons-lang3>3.7</commons-lang3>
-    <com.alibaba.fastjson>1.2.44</com.alibaba.fastjson>
-    <org.dom4j>2.1.1</org.dom4j>
-    <lombok.version>1.16.20</lombok.version>
-    <slf4j.version>1.7.25</slf4j.version>
-    <junrar.version>3.0.0</junrar.version>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <commons-net>3.6</commons-net>
+        <commons-pool2>2.4.2</commons-pool2>
+        <commons-lang3>3.7</commons-lang3>
+        <com.alibaba.fastjson>1.2.44</com.alibaba.fastjson>
+        <org.dom4j>2.1.1</org.dom4j>
+        <lombok.version>1.16.20</lombok.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <junrar.version>3.0.0</junrar.version>
+        <poi.version>4.0.0</poi.version>
+    </properties>
 
   <dependencies>
 
@@ -74,6 +75,40 @@
         <artifactId>junrar</artifactId>
         <version>${junrar.version}</version>
     </dependency>
+
+      <!-- 引用poi依赖 -->
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-scratchpad</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.poi</groupId>
+          <artifactId>poi-ooxml-schemas</artifactId>
+          <version>${poi.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>net.arnx</groupId>
+          <artifactId>wmf2svg</artifactId>
+          <version>0.9.8</version>
+      </dependency>
+
+      <dependency>
+          <groupId>com.innoventsolutions.birt.runtime</groupId>
+          <artifactId>org.apache.batik.transcoder_1.7.0.v201011041433</artifactId>
+          <version>4.8.0</version>
+      </dependency>
 
   </dependencies>
 
