@@ -64,8 +64,8 @@ public class FTPUtil {
      */
     public static boolean isOpenFTPConnection(FTPConfig config) {
         boolean isOpen = false;
-        if (null == ftpClient) {
-            return false;
+        if (ftpClient != null) {
+            return true;
         }
         try {
             // 没有连接
@@ -75,7 +75,7 @@ public class FTPUtil {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("FTP服务器连接登录异常！");
-            System.out.println(e.getMessage());
+            System.out.println("FTP服务器连接登录异常！" + e.getMessage());
             isOpen = false;
         }
         return isOpen;
@@ -104,13 +104,6 @@ public class FTPUtil {
 				ftpClient.connect(config.getHost());
 			}
 
-            // FTP服务器连接回答
-            int reply = ftpClient.getReplyCode();
-            if (!FTPReply.isPositiveCompletion(reply)) {
-                ftpClient.disconnect();
-                return false;
-            }
-
             if (FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
 				// 登录FTP
 				if (ftpClient.login(config.getUser(), config.getPassword())) {
@@ -124,9 +117,13 @@ public class FTPUtil {
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);		// 设置传输的模式
 //					ftpClient.setBufferSize(4096);						// 设置传输大小
 //					ftpClient.setDataTimeout(2000);						// 设置超时
+                    log.info("成功登陆FTP服务器：" + config.getHost() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
 				}
-			}
-			log.info("成功登陆FTP服务器：" + config.getHost() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
+			}else {
+                ftpClient.disconnect();
+                log.info("断开FTP服务器连接：" + config.getHost() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
+            }
+
 			return true;
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -159,6 +156,7 @@ public class FTPUtil {
 			} finally {
 				try {
 					ftpClient.disconnect();// 关闭FTP服务器的连接
+                    ftpClient = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 					log.error("关闭FTP服务器的连接异常！" + e.getMessage());
@@ -605,9 +603,9 @@ public class FTPUtil {
 				"xincan","xincan-0818","D:/ocpp/messageFtpDownload",null
 		);
 
-		boolean connection = isOpenFTPConnection(config);
-        System.out.println(connection);
-		if(!connection){
+//		boolean connection = isOpenFTPConnection(config);
+//        System.out.println(connection);
+//		if(!connection){
             boolean bool = login(config);
             System.out.println(bool);
 
@@ -644,7 +642,7 @@ public class FTPUtil {
 //		changeDir();
 
             close();
-        }
+//        }
 
 
 	}
