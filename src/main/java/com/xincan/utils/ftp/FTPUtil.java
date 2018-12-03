@@ -135,7 +135,8 @@ public class FTPUtil {
 	/**
 	 *
 	 * 下载文件
-	 * 根据路径下载文件
+	 *
+	 * 下载到指定路径
 	 *
 	 * @author JiangXincan
 	 * @Title: downloadFile
@@ -177,7 +178,7 @@ public class FTPUtil {
 	/**
 	 *
 	 * 下载文件
-	 * 根据文件对象下载文件
+	 * 下载到指定文件
 	 *
 	 * @author JiangXincan
 	 * @Title: downloadFile
@@ -575,10 +576,10 @@ public class FTPUtil {
 //		uploadFile(file, "测试安.txt");
 
 
-		// 下载文件（根据路径下载）
-//		downloadFile("D:/ocpp/messageFtpDownload/重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc", "重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc");
+		// 下载文件（下载到指定路径）
+		downloadFile("D:/ocpp/messageFtpDownload/重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc", "重大气象信息专报[2015]第2期-2015年春运天气趋势预测.doc");
 
-		// 下载文件（根据文件下载）
+		// 下载文件（下载到指定文件）
 //		File file = new File("D:/ocpp/messageFtpDownload/春运专报201503.doc");
 //		downloadFile(file, "春运专报201503.doc");
 
@@ -598,7 +599,7 @@ public class FTPUtil {
 //		deleteFile("xincan.png");
 //		deleteDir("apache-tomcat-8.0.26");
 //		changeDir();
-		
+
 		close();
 	}
 
