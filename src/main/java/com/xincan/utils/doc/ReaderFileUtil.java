@@ -11,15 +11,11 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import java.io.*;
 
 /**
- *
-
- * @Description:Word试卷文档模型化解析
-
- * @author <a href="mailto:thoslbt@163.com">Thos</a> 42  * @ClassName: WordToHtml 44  * @version V1.0
- *
+ * 读取文件工具类
+ * @description 支持的文件类型有（doc,docx,txt）文本内容
  */
 @Slf4j
-public class Word2Html {
+public class ReaderFileUtil {
 
 
     public static void main(String[] args)  {
@@ -127,14 +123,6 @@ public class Word2Html {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 对ArrayList中存储的字符串进行处理
-//        int length = arrayList.size();
-//        int[] array = new int[length];
-//        for (int i = 0; i < length; i++) {
-//            String s = arrayList.get(i);
-//            array[i] = Integer.parseInt(s);
-//        }
-        // 返回数组
         return null;
     }
 
