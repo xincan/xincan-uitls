@@ -550,6 +550,8 @@ public class FTPUtil {
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			result = new JSONObject();
+			result.put("code",200);
+			result.put("msg","文件获取成功");
 			result.put("fileName",remoteFileName);
 			result.put("fileCreateTime",sdf.format(maxDate));
 			return result;
@@ -557,6 +559,8 @@ public class FTPUtil {
 			e.printStackTrace();
 			log.error("获取文件失败:" + e.getMessage());
 		}
+		result.put("code",500);
+		result.put("msg","文件获取失败");
 		return result;
 	}
 
