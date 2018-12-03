@@ -6,9 +6,6 @@ import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.model.PicturesTable;
 import org.apache.poi.hwpf.usermodel.CharacterRun;
 import org.apache.poi.hwpf.usermodel.Picture;
-import org.apache.poi.hwpf.usermodel.Range;
-import org.apache.poi.hwpf.usermodel.TableIterator;
-import org.apache.poi.xwpf.usermodel.*;
 import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;

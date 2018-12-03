@@ -1,21 +1,14 @@
 package com.xincan.utils.doc;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
-import org.apache.poi.hwpf.model.PicturesTable;
-import org.apache.poi.hwpf.usermodel.*;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.extractor.POIXMLTextExtractor;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  *
