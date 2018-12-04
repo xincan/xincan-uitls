@@ -231,6 +231,8 @@ public class FTPUtil {
 			outStream = new BufferedOutputStream(outStr);
 			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			success = ftpClient.retrieveFile(remoteFileName, outStream);
+			outStr.close();
+			outStream.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			log.error("文件下载失败:" + e.getMessage());
