@@ -113,9 +113,8 @@ public class FTPUtil {
 					}
 					ftpClient.setControlEncoding( IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET);
 					ftpClient.changeWorkingDirectory(config.getPath());	// 设置FTP下的文件夹
-					ftpClient.setRemoteVerificationEnabled(false);		// 设置被动模式
-					ftpClient.enterLocalPassiveMode();
-					ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);		// 设置传输的模式
+					ftpClient.enterLocalPassiveMode();					// 设置被动模式
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);		// 设置传输的模式
 //					ftpClient.setBufferSize(4096);						// 设置传输大小
 //					ftpClient.setDataTimeout(2000);						// 设置超时
                     log.info("成功登陆FTP服务器：" + config.getHost() + " 端口号：" + config.getPort() + " 目录：" + config.getPath());
@@ -187,10 +186,10 @@ public class FTPUtil {
 			if(!file.exists()){
 				file.mkdirs();
 			}
+			ftpClient.changeWorkingDirectory("/word");
 			outStream = new BufferedOutputStream(new FileOutputStream(localFilePath));
 			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			success = ftpClient.retrieveFile(remoteFileName, outStream);
-			outStream.flush();
 			outStream.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -232,8 +231,6 @@ public class FTPUtil {
 			outStream = new BufferedOutputStream(outStr);
 			remoteFileName = new String(remoteFileName.getBytes(IS_CHARSET ? LOCAL_CHARSET : DEFAULT_CHARSET), SERVER_CHARSET);
 			success = ftpClient.retrieveFile(remoteFileName, outStream);
-			outStream.flush();
-			outStream.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			log.error("文件下载失败:" + e.getMessage());
